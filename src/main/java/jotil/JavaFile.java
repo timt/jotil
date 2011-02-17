@@ -1,7 +1,8 @@
+package jotil;
 
 import java.io.File;
 
-public class JavaFile extends same.File {
+public class JavaFile extends jotil.File {
 
     public JavaFile(File underlyingFile) {
         super(underlyingFile);

@@ -1,7 +1,8 @@
+package jotil;
 
 import java.io.File;
 
-public class XmlFile extends same.File{
+public class XmlFile extends jotil.File{
 
     public XmlFile(File underlyingFile) {
         super(underlyingFile);

@@ -1,21 +1,23 @@
+package jotil;
 
-import jedi.functional.Filter;
-import jedi.functional.Functor;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import org.hamcrest.MatcherAssert;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
-import static jedi.functional.FunctionalPrimitives.collect;
-import static jedi.functional.FunctionalPrimitives.select;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
+import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 public class Folder {
     private final File underlyingFolder;
 
     public Folder(File underlyingFolder) {
-        assertThat(underlyingFolder.isDirectory(), is(true));
+        MatcherAssert.assertThat(underlyingFolder.isDirectory(), is(true));
         this.underlyingFolder = underlyingFolder;
     }
 
@@ -29,20 +31,24 @@ public class Folder {
     }
 
     public List<Folder> subFolders() {
-       return collect(select(Arrays.asList(underlyingFolder.listFiles()), onlyFolders()), asFolders());
+       return transform(collectFolders(), asFolders());
     }
 
-    private Functor<File, Folder> asFolders() {
-        return new Functor<File, Folder>() {
-            public Folder execute(File file) {
+    private List<File> collectFolders() {
+        return newArrayList(filter(asList(underlyingFolder.listFiles()), onlyFolders()));
+    }
+
+    private Function<File, Folder> asFolders() {
+        return new Function<File, Folder>() {
+            public Folder apply(File file) {
                 return new Folder(file);
             }
         };
     }
 
-    private Filter<File> onlyFolders() {
-        return new Filter<File>() {
-            public Boolean execute(File file) {
+    private Predicate<File> onlyFolders() {
+        return new Predicate<File>() {
+            public boolean apply(File file) {
                 return file.isDirectory();
             }
         };

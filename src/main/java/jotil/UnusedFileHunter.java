@@ -1,7 +1,15 @@
+package jotil;
+
+import jotil.Folder;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jotil.FileCollector.collectHibernateFilesFrom;
+import static jotil.FileCollector.collectJavaFilesFrom;
+import static jotil.SourceCodeFolderCollector.collectSubFoldersFrom;
+import static jotil.XmlFile.anXmlFile;
 
 //TODO Hunt for production methods that are only used by test classes
 public class UnusedFileHunter {
